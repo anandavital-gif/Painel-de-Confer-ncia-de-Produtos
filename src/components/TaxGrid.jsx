@@ -89,7 +89,7 @@ const TAXES = [
   },
 ]
 
-function TaxCard({ tax }) {
+function TaxCard({ tax, extraNote }) {
   return (
     <div className={`rounded-xl border p-4 ${tax.colorClass}`}>
       <div className="flex items-start justify-between gap-2 mb-3">
@@ -123,6 +123,16 @@ function TaxCard({ tax }) {
           <p className="text-xs text-gray-600 leading-relaxed">{tax.note}</p>
         </div>
 
+        {extraNote && (
+          <div className="flex items-start gap-2 bg-orange-50 border border-orange-200 rounded-lg px-3 py-2">
+            <svg className="w-3.5 h-3.5 text-orange-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p className="text-xs text-orange-800 leading-relaxed">{extraNote}</p>
+          </div>
+        )}
+
         <div className="flex items-center justify-between pt-1">
           <span className="text-xs text-gray-400">{tax.authority}</span>
           <a
@@ -155,7 +165,15 @@ export default function TaxGrid({ hasST = false }) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {visibleTaxes.map((tax) => (
-          <TaxCard key={tax.id} tax={tax} />
+          <TaxCard
+            key={tax.id}
+            tax={tax}
+            extraNote={
+              tax.id === 'icms' && !hasST
+                ? 'Este produto não consta no Anexo III do RICMS/MS — sujeito à tributação integral de ICMS (17%). Analise o caso manualmente junto à ECONET.'
+                : undefined
+            }
+          />
         ))}
       </div>
 
