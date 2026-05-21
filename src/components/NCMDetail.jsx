@@ -1,9 +1,12 @@
 import { formatNCM, formatDate, formatAto, isActive } from '../utils/format'
+import { lookupST } from '../utils/icmsST'
 import TaxGrid from './TaxGrid'
+import ICMSSTCard from './ICMSSTCard'
 
 export default function NCMDetail({ ncm, onBack }) {
   const ato = formatAto(ncm)
   const active = isActive(ncm)
+  const st = lookupST(ncm.codigo)
 
   return (
     <div className="space-y-4">
@@ -30,14 +33,22 @@ export default function NCMDetail({ ncm, onBack }) {
               {formatNCM(ncm.codigo)}
             </h2>
           </div>
-          <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mt-1 shrink-0 ${
-            active
-              ? 'bg-emerald-500/20 text-emerald-100 ring-1 ring-emerald-400/40'
-              : 'bg-red-500/20 text-red-100 ring-1 ring-red-400/40'
-          }`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${active ? 'bg-emerald-300' : 'bg-red-300'}`} />
-            {active ? 'Ativo' : 'Inativo'}
-          </span>
+          <div className="flex flex-col items-end gap-1.5 mt-1 shrink-0">
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
+              active
+                ? 'bg-emerald-500/20 text-emerald-100 ring-1 ring-emerald-400/40'
+                : 'bg-red-500/20 text-red-100 ring-1 ring-red-400/40'
+            }`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${active ? 'bg-emerald-300' : 'bg-red-300'}`} />
+              {active ? 'Ativo' : 'Inativo'}
+            </span>
+            {st && (
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-400/20 text-yellow-100 ring-1 ring-yellow-300/40">
+                <span className="w-1.5 h-1.5 rounded-full bg-yellow-300" />
+                Sujeito ao ICMS-ST/MS
+              </span>
+            )}
+          </div>
         </div>
 
         <div className="px-6 py-5">
@@ -72,7 +83,10 @@ export default function NCMDetail({ ncm, onBack }) {
         </div>
       </div>
 
-      <TaxGrid />
+      {/* ICMS-ST card — aparece apenas quando o NCM está no Anexo III do RICMS/MS */}
+      {st && <ICMSSTCard st={st} />}
+
+      <TaxGrid hasST={!!st} />
     </div>
   )
 }

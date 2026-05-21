@@ -143,7 +143,9 @@ function TaxCard({ tax }) {
   )
 }
 
-export default function TaxGrid() {
+export default function TaxGrid({ hasST = false }) {
+  const visibleTaxes = hasST ? TAXES.filter(t => t.id !== 'icms') : TAXES
+
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
@@ -152,7 +154,7 @@ export default function TaxGrid() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {TAXES.map((tax) => (
+        {visibleTaxes.map((tax) => (
           <TaxCard key={tax.id} tax={tax} />
         ))}
       </div>
