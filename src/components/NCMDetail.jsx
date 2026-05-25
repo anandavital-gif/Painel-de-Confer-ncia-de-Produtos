@@ -2,6 +2,7 @@ import { formatNCM, formatDate, formatAto, isActive } from '../utils/format'
 import { lookupST } from '../utils/icmsST'
 import TaxGrid from './TaxGrid'
 import ICMSSTCard from './ICMSSTCard'
+import EconetButton from './EconetButton'
 
 export default function NCMDetail({ ncm, onBack }) {
   const ato = formatAto(ncm)
@@ -85,6 +86,19 @@ export default function NCMDetail({ ncm, onBack }) {
 
       {/* ICMS-ST card — aparece apenas quando o NCM está no Anexo III do RICMS/MS */}
       {st && <ICMSSTCard st={st} />}
+
+      {/* Botão ECONET — aparece quando não há ST (tributação integral) */}
+      {!st && (
+        <div className="flex items-center justify-between bg-indigo-50 border border-indigo-200 rounded-xl px-4 py-3">
+          <div>
+            <p className="text-sm font-medium text-indigo-800">Produto com tributação integral de ICMS</p>
+            <p className="text-xs text-indigo-500 mt-0.5">
+              O NCM não consta no Anexo III do RICMS/MS. Consulte a ECONET para análise detalhada.
+            </p>
+          </div>
+          <EconetButton ncm={ncm.codigo} />
+        </div>
+      )}
 
       <TaxGrid hasST={!!st} />
     </div>

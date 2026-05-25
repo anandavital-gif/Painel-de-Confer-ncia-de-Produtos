@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { exportEnrichedExcel } from '../utils/sheetParser'
+import EconetButton from './EconetButton'
 
 const STATUS_CONFIG = {
   valid:   { label: 'Coerente',     bg: 'bg-emerald-100', text: 'text-emerald-700', dot: 'bg-emerald-400' },
@@ -152,7 +153,7 @@ export default function ValidationTable({ results, running, progress, total, don
                     <td className="px-3 py-2.5 bg-blue-50/40">
                       {r.cest
                         ? <span className="text-xs text-emerald-700 font-medium">ST — Anexo III RICMS/MS</span>
-                        : <span className="text-xs text-orange-600">Integral (17%) — ECONET</span>
+                        : <EconetButton ncm={r.ncm} size="xs" />
                       }
                     </td>
 
