@@ -9,10 +9,13 @@ function Row({ label, value, highlight }) {
   )
 }
 
+function fmt(v) {
+  return v != null ? `${Number(v).toFixed(2).replace('.', ',')}%` : '—'
+}
+
 export default function ICMSSTCard({ st }) {
   return (
     <div className="rounded-xl border-2 border-emerald-400 bg-white overflow-hidden shadow-sm">
-      {/* Header */}
       <div className="bg-emerald-600 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="bg-white text-emerald-700 text-xs font-bold px-2 py-0.5 rounded-md">ICMS-ST</span>
@@ -24,30 +27,23 @@ export default function ICMSSTCard({ st }) {
       </div>
 
       <div className="p-4 space-y-3">
-        {/* Descrição ST */}
         <p className="text-sm text-gray-700 leading-snug">{st.descricao}</p>
 
-        {/* CEST + MVAs */}
         <div className="space-y-1.5">
           <Row
             label="CEST (Convênio ICMS 142/2018)"
             value={formatCEST(st.cest)}
             highlight
           />
-          <Row
-            label="MVA Interno (MS → MS)"
-            value={`${st.mva_interno.toFixed(2).replace('.', ',')}%`}
-          />
-          <Row
-            label="MVA Externo (outro estado → MS)"
-            value={`${st.mva_externo.toFixed(2).replace('.', ',')}%`}
-          />
+          <Row label="MVA Interno (MS → MS)"                    value={fmt(st.mva_interno)} />
+          <Row label="MVA Externo — alíquota interestadual 4%"  value={fmt(st.mva_ext_4)}   />
+          <Row label="MVA Externo — alíquota interestadual 7%"  value={fmt(st.mva_ext_7)}   />
+          <Row label="MVA Externo — alíquota interestadual 12%" value={fmt(st.mva_ext_12)}  />
         </div>
 
-        {/* Rodapé legislação */}
         <div className="flex items-center justify-between pt-1 border-t border-gray-100">
           <span className="text-xs text-gray-400">
-            Decreto Estadual nº 9.203/1998 — Anexo III
+            Decreto Estadual nº 9.203/1998 — Subanexo I do Anexo III
           </span>
           <a
             href="https://www.sefaz.ms.gov.br/legislacao/"

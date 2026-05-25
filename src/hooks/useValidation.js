@@ -58,8 +58,11 @@ function buildResult(row, ncmData, error) {
     segmento: st?.segmento ?? null,
     cest: cestCorreto,
     cestOriginalOk,
-    mvaInterno: st?.mva_interno ?? null,
-    mvaExterno: st?.mva_externo ?? null,
+    mvaInterno:  st?.mva_interno  ?? null,
+    mvaExterno:  st?.mva_ext_12   ?? null,
+    mvaExt4:     st?.mva_ext_4    ?? null,
+    mvaExt7:     st?.mva_ext_7    ?? null,
+    mvaExt12:    st?.mva_ext_12   ?? null,
     icmsRegime: st ? 'ST — Anexo III RICMS/MS' : 'Tributação Integral (17%) — Consultar ECONET',
   }
 }
